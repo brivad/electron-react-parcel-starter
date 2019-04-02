@@ -5,18 +5,33 @@ import './index.scss'
 
 import SuperList from './SuperList'
 
-const items = [
-  { id: 1, name: 'mario' },
-  { id: 2, name: 'ciccio' },
-  { id: 3, name: 'eva' }
-]
+// import { ipcRenderer } from 'electron' (brekka con parcel)
+const { ipcRenderer } = window.require('electron')
 
 export default class App extends Component {
+  state = {
+    items: [
+      { id: 1, name: 'mario' },
+      { id: 2, name: 'ciccio' },
+      { id: 3, name: 'eva' }
+    ]
+  }
+
   render() {
     return (
       <div className="App">
+        <button
+          onClick={() => {
+            ipcRenderer.send('action:go', this.state.items)
+            ipcRenderer.on('items:update', (event, newItems) => {
+              this.setState({ items: newItems })
+            })
+          }}
+        >
+          Go!
+        </button>
         <img src={logo} />
-        <SuperList items={items} />
+        <SuperList items={this.state.items} />
       </div>
     )
   }
