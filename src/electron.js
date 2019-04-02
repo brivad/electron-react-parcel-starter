@@ -5,7 +5,7 @@ const { app, BrowserWindow, ipcMain } = electron
 
 let mainWindow
 
-const isDevMode = process.execPath.match(/[\\/]electron/)
+const isDevMode = process.mainModule.filename.indexOf('app.asar') === -1
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
